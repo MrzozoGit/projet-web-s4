@@ -6,10 +6,9 @@ import ArtistCard from '@/components/Artist/ArtistCard.vue';
 <template>
     <div class="artist_list">
         <h2 class="artist_list--title">Top {{ number }} artists</h2>
-        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
         <ul class="artist_list--list">
             <li class="artist_list--list--li" v-for="artist in artistsList" :key="artist">
-                <ArtistCard :name="artist"></ArtistCard>
+                <ArtistCard :data="artist"></ArtistCard>
             </li>
         </ul>
     </div>
@@ -19,36 +18,20 @@ import ArtistCard from '@/components/Artist/ArtistCard.vue';
 export default {
     name: 'ArtistList',
     props: {
-        username: { type: String, required: true },
-        usernameUpdateCounter: { type: Number, required: true },
-        number: { type: Number, required: true }
+        number: { type: Number, required: true },
+        artists: { type: Promise, required: true }
     },
     data() {
         return {
-            artistsList: [],
-            topArtists: [],
-            errorMessage: ''
+            artistsList: []
         }
     },
-    methods: {
-        async retrieveArtistsList() {
-            try {
-                this.artistsList = await getTopArtists(this.username, this.number);
-                this.errorMessage = '';
-            } catch (err) {
-                this.artistsList = [];
-                this.errorMessage = err;
-            }
-        }
+
+    mounted() {
+        console.log("mounted");
+        this.artists.then(res => this.artistsList = res);
+        console.log(this.artists);
     },
-    watch: {
-        // Surveiller les changements de updateCounter
-        usernameUpdateCounter(newVal, oldVal) {
-            if (newVal !== oldVal) {
-                this.retrieveArtistsList();
-            }
-        }
-    }
 }
 </script>
   

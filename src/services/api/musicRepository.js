@@ -12,7 +12,7 @@ var spotifyData = {
 
 const corsBypass = "https://cors-anywhere.herokuapp.com/";
 
-async function getSpotifyToken() {
+export async function getSpotifyToken() {
     const resSpotify = await fetch(corsBypass + "https://open.spotify.com/get_access_token?reason=transport&productType=web_player", {
         method: "GET",
         headers: {
@@ -21,7 +21,6 @@ async function getSpotifyToken() {
     }).then(res => res = res.json());
     spotifyData.token = resSpotify.accessToken;
 }
-await getSpotifyToken();
 
 export async function getSampleArtistsList() {
     return [

@@ -13,12 +13,14 @@ import ArtistList from "@/components/Artist/ArtistList.vue";
     <!-- Select data type to show -->
     <select v-model="selectedDataType">
         <option disabled value="">Please select one</option>
-        <option value="top10">Top 10 artists</option>
-        <option value="top100">Top 100 artists</option>
+        <option value="top10" :disabled="!hasFirstLoaded">Top 10 artists</option>
+        <option value="top100" :disabled="!hasFirstLoaded">Top 100 artists</option>
     </select>
 
-    <ArtistList v-if="selectedDataType=='top10'" :number="10" :artists="getTopOrdered(10)"></ArtistList>
-    <ArtistList v-if="selectedDataType=='top100'" :number="100" :artists="getTopOrdered(100)"></ArtistList>
+    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+    <ArtistList v-if="selectedDataType=='top10' && !loadingStatus" :number="10" :artists="getTopOrdered(10)"></ArtistList>
+    <ArtistList v-if="selectedDataType=='top100' && !loadingStatus" :number="100" :artists="getTopOrdered(100)"></ArtistList>
 </template>
 
 <script>
@@ -30,13 +32,28 @@ export default {
                 artists: {}
             },
             updateCounter: 0,
-            selectedDataType: ''
+            selectedDataType: '',
+            loadingStatus: true,
+            hasFirstLoaded: false,
+            errorMessage: ''
         };
     },
+
+    mounted() {
+        this.toggleLoadingAnimation();
+    },
+    
     methods: {
         async updateUsername() {
+            if(this.userData.username == '' || this.userData.username.trim().length === 0) {
+                this.errorMessage = "Please enter a valid username!";
+                return;
+            }
+            this.toggleLoadingAnimation();
             await this.retrieveArtistsList();
             await this.retrieveUserInfos();
+            this.toggleLoadingAnimation();
+            this.hasFirstLoaded = true;
         },
 
         async retrieveArtistsList() {
@@ -44,7 +61,6 @@ export default {
                 this.userData.artists = await getArtists(this.userData.username, 100);
                 this.errorMessage = '';
             } catch (err) {
-                this.userData.artists = {};
                 this.errorMessage = err;
             }
         },
@@ -52,15 +68,18 @@ export default {
             try {
                 this.userData.infos = await getUserInfos(this.userData.username);
             } catch(err) {
-                this.userData.infos = {};
                 this.errorMessage = err;
             }
         },
-        getTopOrdered(nb) {
-            console.log(nb)
-            let topArtists = this.userData.artists.sort((a, b) => a.rank - b.rank).slice(0, nb);
-            console.log(topArtists)
-            return topArtists
+        async toggleLoadingAnimation() {
+            this.loadingStatus = !this.loadingStatus;
+            if(this.loadingStatus) document.querySelector(".CD--img").style.display = "block";
+            else document.querySelector(".CD--img").style.display = "none";
+        },
+        async getTopOrdered(nb) {
+            let topArtists = this.userData.artists.sort((a, b) => a.rank - b.rank);
+            topArtists = topArtists.slice(0, nb);
+            return topArtists;
         }
     }
 };

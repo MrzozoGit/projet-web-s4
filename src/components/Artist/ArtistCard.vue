@@ -3,11 +3,11 @@ import { getArtistInfo } from '@/services/api/musicRepository.js';
 </script>
 
 <template>
-    <a v-bind:href="artistData.url" target="_blank">
+    <a v-bind:href="data.lastfmUrl" target="_blank">
         <div class="artist_card">
-            <img class="artist_card--picture" v-bind:src="artistData.img" />
+            <img class="artist_card--picture" v-bind:src="data.img" />
             <div class="artist_card--infos">
-                <h2 class="artist_card--infos--name">{{ artistData.name }}</h2>
+                <h2 class="artist_card--infos--name">{{ data.name }}</h2>
             </div>
         </div>
     </a>
@@ -17,23 +17,7 @@ import { getArtistInfo } from '@/services/api/musicRepository.js';
 export default {
     name: 'ArtistCard',
     props: {
-        id: [String, Number],
-        name: { type: String, required: true },
-        pictureUrl: { type: String, default: "https://lh3.googleusercontent.com/proxy/nzN9SWft2aCUm-PDNCi90PkbSuTBAYP1hehPeH8523gaNBp_-4QuY8u-2fub_-enxXNAXyoQQjQZG7H03G_kTSWa6WARld3GXkAwwUsLVbOR" }
-    },
-    data() {
-        return {
-            artistData: []
-        }
-    },
-    created: function () {
-        this.retrieveArtistInfo();
-    },
-    methods: {
-        async retrieveArtistInfo() {
-            this.artistData = (await getArtistInfo(this.name)).artist;
-            // console.log(this.artistData);
-        }
+        data: { type: Object, required: true }
     }
 }
 </script>

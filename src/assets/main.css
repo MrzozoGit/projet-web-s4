@@ -10,14 +10,10 @@ body {
   background-repeat: repeat;
   position: relative;
   font-family: ms pgothic;
-  animation: moveBackground 15s linear infinite;
+  animation: moveBackground 4s linear infinite;
 }
 
 #app {
-  height: 100%;
-}
-
-#app>div {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -54,6 +50,6 @@ body {
     background-position: top left;
   }
   100% {
-    background-position: bottom right;
+    background-position: 240px 240px;
   }
 }
