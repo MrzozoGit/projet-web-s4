@@ -22,23 +22,6 @@ export async function getSpotifyToken() {
     spotifyData.token = resSpotify.accessToken;
 }
 
-export async function getSampleArtistsList() {
-    return [
-        {name:"underscores"},
-        {name:"drive45"},
-        {name:"kero kero bonito"},
-        {name:"100gecs"},
-        {name:"porter robinson"},
-        {name:"snorunt"},
-        {name:"men i trust"},
-        {name:"pinkpantheress"},
-        {name:"steve reich"},
-        {name:"frost children"},
-        {name:"alice longyu gao"},
-        {name:"nujabes"}
-    ];
-}
-
 export async function getArtistImage(artist) {
     // Lastfm doesn't give access to artists images, so I use the Spotify API just for that.
     const urlSpotify = "https://api.spotify.com/v1/search?type=artist&q=" + artist + "&decorate_restrictions=false&best_match=true&include_external=audio&limit=1";

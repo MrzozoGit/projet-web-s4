@@ -1,16 +1,18 @@
 <script setup>
 import { getArtistInfo } from '@/services/api/musicRepository.js';
+import { saveArtist } from '@/services/localstorage/favArtists.js';
 </script>
 
 <template>
-    <a v-bind:href="data.lastfmUrl" target="_blank">
-        <div class="artist_card">
+    <div class="artist_card">
+        <a v-bind:href="data.lastfmUrl" target="_blank">
             <img class="artist_card--picture" v-bind:src="data.img" />
             <div class="artist_card--infos">
                 <h2 class="artist_card--infos--name">{{ data.name }}</h2>
             </div>
-        </div>
-    </a>
+        </a>
+        <p  v-on:click="save" style="z-index: 100; position: absolute; right: .5rem; top: 0; color: white; font-weight: bold;">SAVE</p>
+    </div>
 </template>
   
 <script>
@@ -18,22 +20,18 @@ export default {
     name: 'ArtistCard',
     props: {
         data: { type: Object, required: true }
+    },
+    methods: {
+        save() {
+            saveArtist(this.data);
+        }
     }
 }
 </script>
   
 <style>
-a {
-    text-decoration: none;
-}
-
 .artist_card {
     position: relative;
-    display: flex;
-    align-items: end;
-    width: 10rem;
-    height: 10rem;
-
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.63);
     border: #D1DBFF ridge 3px;
     /* cool pink chunky border */
@@ -42,6 +40,15 @@ a {
     ;
 
     transition: all .15s ease-in-out;
+}
+
+.artist_card a {
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: end;
+    width: 10rem;
+    height: 10rem;
 }
 
 .artist_card:hover {
@@ -54,7 +61,6 @@ a {
     height: inherit;
     object-fit: cover;
     z-index: 50;
-    padding-top: 5px;
 }
 
 .artist_card--infos {

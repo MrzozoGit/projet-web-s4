@@ -81,6 +81,7 @@ export default {
     display: flex;
     box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.63);
     border: #D1DBFF ridge 8px;
+    margin-bottom: 2rem;
     margin-top: 2rem;
     /* align-items: space-between; */
 

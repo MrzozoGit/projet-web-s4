@@ -19,7 +19,7 @@ export default {
     name: 'ArtistList',
     props: {
         number: { type: Number, required: true },
-        artists: { type: Promise, required: true }
+        artists: { type: Promise, type: Object, required: true }
     },
     data() {
         return {
@@ -29,8 +29,11 @@ export default {
 
     mounted() {
         console.log("mounted");
-        this.artists.then(res => this.artistsList = res);
-        console.log(this.artists);
+        try {
+            this.artists.then(res => this.artistsList = res);
+        } catch {
+            this.artistsList = this.artists;
+        }
     },
 }
 </script>
@@ -65,4 +68,4 @@ export default {
 }
 
 .artist_list--list--li {}
-</style>@/components/ArtistCard.vue
+</style>
