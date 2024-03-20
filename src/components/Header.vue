@@ -26,6 +26,7 @@
     width: 450px;
     height: 375px;
     margin-top: -150px;
+    object-fit: contain;
 }
 
 /* .header {

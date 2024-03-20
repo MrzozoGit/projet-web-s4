@@ -15,6 +15,7 @@
 }
 
 .CD--img {
+  display: none;
     animation: rotateAndScale 3s linear infinite;
 }
 

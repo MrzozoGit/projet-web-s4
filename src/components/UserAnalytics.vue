@@ -1,6 +1,7 @@
 <script setup>
 import { getArtists, getUserInfos } from '@/services/api/musicRepository.js';
 import ArtistList from "@/components/Artist/ArtistList.vue";
+import UserDetails from "@/components/User/UserDetails.vue";
 </script>
 
 <template>
@@ -19,6 +20,7 @@ import ArtistList from "@/components/Artist/ArtistList.vue";
 
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 
+    <UserDetails v-if="hasFirstLoaded && userData.username && !loadingStatus" :user="userData.username" :userData="userData.infos"></UserDetails>
     <ArtistList v-if="selectedDataType=='top10' && !loadingStatus" :number="10" :artists="getTopOrdered(10)"></ArtistList>
     <ArtistList v-if="selectedDataType=='top100' && !loadingStatus" :number="100" :artists="getTopOrdered(100)"></ArtistList>
 </template>
@@ -104,5 +106,6 @@ export default {
     width: 12rem;
     padding: 0;
     margin-top: .25rem;
+    margin-bottom: .25rem;
 }
 </style>
