@@ -8,7 +8,7 @@ import ArtistCard from '@/components/Artist/ArtistCard.vue';
         <h2 class="artist_list--title">Top {{ number }} artists</h2>
         <ul class="artist_list--list">
             <li class="artist_list--list--li" v-for="artist in artistsList" :key="artist">
-                <ArtistCard :data="artist"></ArtistCard>
+                <ArtistCard :data="artist" :isSaved="isSaved"></ArtistCard>
             </li>
         </ul>
     </div>
@@ -19,7 +19,8 @@ export default {
     name: 'ArtistList',
     props: {
         number: { type: Number, required: true },
-        artists: { type: Promise, type: Object, required: true }
+        artists: { type: Promise, type: Object, required: true },
+        isSaved: { type: Boolean, required: true }
     },
     data() {
         return {

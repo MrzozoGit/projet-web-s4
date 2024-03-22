@@ -1,17 +1,18 @@
 <script setup>
 import { getArtistInfo } from '@/services/api/musicRepository.js';
-import { saveArtist } from '@/services/localstorage/favArtists.js';
+import { deleteArtist, saveArtist } from '@/services/localstorage/favArtists.js';
 </script>
 
 <template>
-    <div class="artist_card">
+    <div class="artist_card" v-if="!isJustDeleted">
         <a v-bind:href="data.lastfmUrl" target="_blank">
             <img class="artist_card--picture" v-bind:src="data.img" />
             <div class="artist_card--infos">
                 <h2 class="artist_card--infos--name">{{ data.name }}</h2>
             </div>
         </a>
-        <p  v-on:click="save" style="z-index: 100; position: absolute; right: .5rem; top: 0; color: white; font-weight: bold;">SAVE</p>
+        <p v-if="!isSaved" v-on:click="save" style="z-index: 100; position: absolute; right: .5rem; top: 0; color: white; font-weight: bold;">SAVE</p>
+        <p v-else v-on:click="unsave" style="z-index: 100; position: absolute; right: .5rem; top: 0; color: white; font-weight: bold;">DELETE</p>
     </div>
 </template>
   
@@ -19,11 +20,22 @@ import { saveArtist } from '@/services/localstorage/favArtists.js';
 export default {
     name: 'ArtistCard',
     props: {
-        data: { type: Object, required: true }
+        data: { type: Object, required: true },
+        isSaved: { type: Boolean, required: true }
+    },
+    data() {
+        return {
+            isJustDeleted: false
+        };
     },
     methods: {
         save() {
             saveArtist(this.data);
+        },
+
+        unsave() {
+            deleteArtist(this.data.name);
+            this.isJustDeleted = true;
         }
     }
 }

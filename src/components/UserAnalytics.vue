@@ -14,26 +14,27 @@ import UserDetails from "@/components/User/UserDetails.vue";
     </div>
 
     <!-- Select data type to show -->
-    <select class="select" v-model="selectedPageType">
-        <option disabled value="">Please select one</option>
-        <option value="saved">My saved artists</option>
-        <option value="user" :disabled="!hasFirstLoaded">User details</option>
-    </select>
-
-    <ArtistList v-if="selectedPageType=='saved'" :number="10" :artists="getFav()"></ArtistList>
-    <UserDetails v-if="selectedPageType=='user' && hasFirstLoaded && userData.username && !loadingStatus" :user="userData.username" :userData="userData.infos"></UserDetails>
-
-    <!-- Select data type to show -->
     <select class="select" v-model="selectedDataType">
         <option disabled value="">Please select one</option>
+        <option value="saved">My saved artists</option>
         <option value="top10" :disabled="!hasFirstLoaded">{{userData.username}}'s top 10 artists</option>
         <option value="top100" :disabled="!hasFirstLoaded">{{userData.username}}'s top 100 artists</option>
     </select>
 
+
+    <!-- Select data type to show -->
+    <!-- <select class="select" v-model="selectedDataType">
+        <option disabled value="">Please select one</option>
+        <option value="top10" :disabled="!hasFirstLoaded">{{userData.username}}'s top 10 artists</option>
+        <option value="top100" :disabled="!hasFirstLoaded">{{userData.username}}'s top 100 artists</option>
+    </select> -->
+
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 
-    <ArtistList v-if="selectedDataType=='top10' && !loadingStatus" :number="10" :artists="getTopOrdered(10)"></ArtistList>
-    <ArtistList v-if="selectedDataType=='top100' && !loadingStatus" :number="100" :artists="getTopOrdered(100)"></ArtistList>
+    <ArtistList v-if="selectedDataType=='saved'" :number="10" :artists="getFav()" :isSaved="true"></ArtistList>
+    <UserDetails v-if="selectedDataType!='saved' && hasFirstLoaded && !loadingStatus" :user="userData.username" :userData="userData.infos"></UserDetails>
+    <ArtistList v-if="selectedDataType=='top10' && !loadingStatus" :number="10" :artists="getTopOrdered(10)" :isSaved="false"></ArtistList>
+    <ArtistList v-if="selectedDataType=='top100' && !loadingStatus" :number="100" :artists="getTopOrdered(100)" :isSaved="false"></ArtistList>
 </template>
 
 <script>
