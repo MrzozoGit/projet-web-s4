@@ -1,5 +1,5 @@
 <script setup>
-import { getArtists, getUserInfos } from '@/services/api/musicRepository.js';
+import { getArtists, getUserInfos, getLastPlayedTrack } from '@/services/api/musicRepository.js';
 import { getFavArtists } from '@/services/localstorage/favArtists.js';
 import { remember, getLastUser } from '@/services/localstorage/rememberMe.js';
 import ArtistList from "@/components/Artist/ArtistList.vue";
@@ -17,8 +17,8 @@ import UserDetails from "@/components/User/UserDetails.vue";
     <select class="select" v-model="selectedDataType">
         <option disabled value="">Please select one</option>
         <option value="saved">My saved artists</option>
-        <option value="top10" :disabled="!hasFirstLoaded">{{userData.username}}'s top 10 artists</option>
-        <option value="top100" :disabled="!hasFirstLoaded">{{userData.username}}'s top 100 artists</option>
+        <option value="top10" :disabled="!hasFirstLoaded || !userData.artists">{{userData.username}}'s top 10 artists</option>
+        <option value="top100" :disabled="!hasFirstLoaded || !userData.artists">{{userData.username}}'s top 100 artists</option>
     </select>
 
 
@@ -32,9 +32,9 @@ import UserDetails from "@/components/User/UserDetails.vue";
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 
     <ArtistList v-if="selectedDataType=='saved'" :number="10" :artists="getFav()" :isSaved="true"></ArtistList>
-    <UserDetails v-if="selectedDataType!='saved' && hasFirstLoaded && !loadingStatus" :user="userData.username" :userData="userData.infos"></UserDetails>
-    <ArtistList v-if="selectedDataType=='top10' && !loadingStatus" :number="10" :artists="getTopOrdered(10)" :isSaved="false"></ArtistList>
-    <ArtistList v-if="selectedDataType=='top100' && !loadingStatus" :number="100" :artists="getTopOrdered(100)" :isSaved="false"></ArtistList>
+    <UserDetails v-if="selectedDataType!='saved' && hasFirstLoaded && !loadingStatus && userData.lastPlayedTrack" :user="userData.username" :userData="userData.infos" :lastPlayed="userData.lastPlayedTrack"></UserDetails>
+    <ArtistList v-if="selectedDataType=='top10' && !loadingStatus && userData.artists" :number="10" :artists="getTopOrdered(10)" :isSaved="false"></ArtistList>
+    <ArtistList v-if="selectedDataType=='top100' && !loadingStatus && userData.artists" :number="100" :artists="getTopOrdered(100)" :isSaved="false"></ArtistList>
 </template>
 
 <script>
@@ -42,8 +42,7 @@ export default {
     data() {
         return {
             userData: {
-                username: getLastUser(),
-                artists: {}
+                username: getLastUser()
             },
             updateCounter: 0,
             selectedPageType: '',
@@ -65,8 +64,15 @@ export default {
                 return;
             }
             this.toggleLoadingAnimation();
-            await this.retrieveArtistsList();
-            await this.retrieveUserInfos();
+            try {
+                await this.retrieveUserInfos();
+                await this.retrieveArtistsList();
+                this.errorMessage = '';
+            } catch(err) {
+                this.userData.lastPlayedTrack = undefined;
+                this.userData.artists = undefined;
+                this.errorMessage = err;
+            }
             this.toggleLoadingAnimation();
             this.hasFirstLoaded = true;
             remember(this.userData.username);
@@ -75,16 +81,16 @@ export default {
         async retrieveArtistsList() {
             try {
                 this.userData.artists = await getArtists(this.userData.username, 100);
-                this.errorMessage = '';
             } catch (err) {
-                this.errorMessage = err;
+                throw err;
             }
         },
         async retrieveUserInfos() {
             try {
                 this.userData.infos = await getUserInfos(this.userData.username);
+                this.userData.lastPlayedTrack = await getLastPlayedTrack(this.userData.username);
             } catch(err) {
-                this.errorMessage = err;
+                throw err;
             }
         },
         async toggleLoadingAnimation() {
@@ -99,6 +105,9 @@ export default {
         },
         getFav() {
             return getFavArtists();
+        },
+        getLastPlayed() {
+            getLastPlayedTrack();
         }
     }
 };
@@ -127,7 +136,7 @@ export default {
 }
 
 .select {
-    /* margin-top: .25rem; */
+    margin-top: .25rem;
     /* margin-top: 2rem; */
 }
 </style>

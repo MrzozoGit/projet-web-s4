@@ -1,3 +1,7 @@
+<script setup>
+import { getLastPlayedTrack } from '@/services/api/musicRepository.js';
+import UserDetailsCounter from '@/components/User/UserDetailsCounter.vue'
+</script>
 <template>
     <div class="user_details">
         <img class="user_details--img" :src="getImage" alt="user profile picture">
@@ -7,25 +11,19 @@
                 <p class="user_details--country" v-if="userData.country && userData.country!='None'">{{ getCountry }}</p>
             </div>
             <div class="user_details--counter_container">
-                <div class="user_details--counter">
-                    <p class="user_details--counter--title">Playcount</p>
-                    <p class="user_details--counter--count">{{ userData.stats.playcount }}</p>
-                </div>
-                <div class="user_details--counter">
-                    <p class="user_details--counter--title">Track count</p>
-                    <p class="user_details--counter--count">{{ userData.stats.track_count }}</p>
-                </div>
-                <div class="user_details--counter">
-                    <p class="user_details--counter--title">Album Count</p>
-                    <p class="user_details--counter--count">{{ userData.stats.album_count }}</p>
-                </div>
-                <div class="user_details--counter">
-                    <p class="user_details--counter--title">Artist Count</p>
-                    <p class="user_details--counter--count">{{ userData.stats.artist_count }}</p>
-                </div>
+                <UserDetailsCounter :title="'Playcount'" :count="userData.stats.playcount"></UserDetailsCounter>
+                <UserDetailsCounter :title="'Track count'" :count="userData.stats.track_count"></UserDetailsCounter>
+                <UserDetailsCounter :title="'Album Count'" :count="userData.stats.album_count"></UserDetailsCounter>
+                <UserDetailsCounter :title="'Artist Count'" :count="userData.stats.artist_count"></UserDetailsCounter>
             </div>
         </div>
-        
+        <div class="user_details--lastplayed">
+            <img class="user_details--lastplayed--img" :src="lastPlayed.img" alt="last played track cover">
+            <div class="user_details--lastplayed--infos">
+                <p>Last played track</p>
+                <p><a :href="lastPlayed.url" target="_blank">{{ lastPlayed.name }}</a> by {{ lastPlayed.artist }}</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -34,13 +32,14 @@ export default {
     name: 'UserDetails',
     props: {
         user: { type: String, required: false },
-        userData: { type: Object, required: true }
+        userData: { type: Object, required: true },
+        lastPlayed: { type: Object, required: true }
     },
-    data() {
-        return {
-            langMap: {}
-        }
-    },
+    // data() {
+    //     return {
+    //         // lastPlayed: {}
+    //     }
+    // },
 
     computed: {
         getImage() {
@@ -69,8 +68,8 @@ export default {
     },
 
     mounted() {
-        console.log("mounted");
-        console.log(this.userData);
+        // console.log("mounted");
+        // console.log(this.userData);
     },
 }
 </script>
@@ -90,11 +89,9 @@ export default {
 }
 
 .user_details--img {
-    /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.63); */
     border-right: #D1DBFF ridge 8px;
     height: 174px;
     object-fit: cover;
-    /* margin-left: -10px; */
 }
 
 .user_details--container {
@@ -107,7 +104,6 @@ export default {
 .user_details--username {
     font-size: 1.25em;
     font-weight: bold;
-    /* border:groove 10px black; */
     overflow: hidden
 }
 
@@ -115,42 +111,31 @@ export default {
     font-weight: bold;
 }
 
-.user_details--counter_container {
+.user_details--lastplayed {
+    border-left: #D1DBFF ridge 8px;
+    overflow: scroll;
+    width: 182px;
+    height: 174px;
+    overflow-x: hidden;
     display: flex;
+    flex-direction: column;
 }
 
-.user_details--counter {
+.user_details--lastplayed--img {
+    min-height: 174px;
+    object-fit: cover;
+}
+
+.user_details--lastplayed--infos {
+    padding: .25rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-content: center;
+    text-align: center;
 }
 
-.user_details--counter + .user_details--counter {
-    margin-left: .75rem;
-
-}
-
-.user_details--counter--title {
-    font-size: 1.1em;
-}
-
-.user_details--counter--count {
-    /* transform: rotateX(50deg); */
-    color: blue;
-    font-weight: bold;
-    animation: scaleUpDown 2s cubic-bezier(0.075, 0.82, 0.165, 1) infinite;
-}
-
-@keyframes scaleUpDown {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
+.user_details--counter_container {
+    display: flex;
 }
 </style>

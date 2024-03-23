@@ -89,7 +89,7 @@ export async function getArtists(user, nbOfArtists) {
     return topArtists;
 }
 
-export async function getLastPlayerTrack(user) {
+export async function getLastPlayedTrack(user) {
     const urlLastfm = lastfmData.baseURL + "?method=user.getrecenttracks&user=" + user + "&api_key=" + lastfmData.api_key + lastfmData.additional + "&limit=1";
     const resLastfm = await fetch(urlLastfm, {
         method: "GET",
@@ -97,6 +97,16 @@ export async function getLastPlayerTrack(user) {
             "Content-Type": "application/json",
         }
     }).then(res => res = res.json());
+
+    const track = resLastfm.recenttracks.track[0];
+    const trackData = {
+        name: track.name,
+        artist: track.artist["#text"],
+        url: track.url,
+        img: track.image[2]["#text"]
+    }
+    
+    return trackData;
 }
 
 export async function getUserInfos(user) {
