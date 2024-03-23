@@ -4,30 +4,12 @@ import { getFavArtists } from '@/services/localstorage/favArtists.js';
 import { remember, getLastUser } from '@/services/localstorage/rememberMe.js';
 import ArtistList from "@/components/Artist/ArtistList.vue";
 import UserDetails from "@/components/User/UserDetails.vue";
+import UserAnalyticsNavigation from "@/components/UserAnalyticsNavigation.vue";
 </script>
 
 <template>
-    <!-- Username input -->
-    <div class="username_input">
-        <input class="username_input--input" v-model="userData.username" placeholder="my username..." />
-        <button class="username_input--button" @click="updateUsername">Retrieve user analytics</button>
-    </div>
-
-    <!-- Select data type to show -->
-    <select class="select" v-model="selectedDataType">
-        <option disabled value="">Please select one</option>
-        <option value="saved">My saved artists</option>
-        <option value="top10" :disabled="!hasFirstLoaded || !userData.artists">{{userData.username}}'s top 10 artists</option>
-        <option value="top100" :disabled="!hasFirstLoaded || !userData.artists">{{userData.username}}'s top 100 artists</option>
-    </select>
-
-
-    <!-- Select data type to show -->
-    <!-- <select class="select" v-model="selectedDataType">
-        <option disabled value="">Please select one</option>
-        <option value="top10" :disabled="!hasFirstLoaded">{{userData.username}}'s top 10 artists</option>
-        <option value="top100" :disabled="!hasFirstLoaded">{{userData.username}}'s top 100 artists</option>
-    </select> -->
+    <UserAnalyticsNavigation :username="userData.username" :hasFirstLoaded="hasFirstLoaded" :artists="userData.artists"
+    @update:username="handleUsernameUpdate" @select:dataType="selectedDataType = $event"></UserAnalyticsNavigation>
 
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 
@@ -58,11 +40,15 @@ export default {
     },
     
     methods: {
-        async updateUsername() {
-            if(this.userData.username == '' || this.userData.username.trim().length === 0) {
+        async handleUsernameUpdate(newUsername) {
+            if(newUsername == '' || newUsername.trim().length === 0) {
                 this.errorMessage = "Please enter a valid username!";
                 return;
             }
+            this.userData.username = newUsername;
+            await this.updateUsername();
+        },
+        async updateUsername() {
             this.toggleLoadingAnimation();
             try {
                 await this.retrieveUserInfos();
@@ -112,31 +98,3 @@ export default {
     }
 };
 </script>
-
-<style>
-.username_input {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-}
-
-.username_input--input {
-    width: 12rem;
-    padding: 0;
-    text-align: center;
-}
-
-.username_input--button {
-    width: 12rem;
-    padding: 0;
-    margin-top: .25rem;
-    /* margin-bottom: .25rem; */
-}
-
-.select {
-    margin-top: .25rem;
-    /* margin-top: 2rem; */
-}
-</style>
