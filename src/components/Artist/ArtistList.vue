@@ -47,8 +47,6 @@ export default {
     margin-top: 2rem;
     margin-left: 3rem;
     margin-right: 3rem;
-    /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.63);
-    border: #D1DBFF double 3px; */
     font-family: ms pgothic;
 }
 
@@ -68,5 +66,18 @@ export default {
     justify-content: center;
 }
 
-.artist_list--list--li {}
+@media screen and (max-width: 768px) {
+    .artist_list {
+        margin-left: 0rem;
+        margin-right: 0rem;
+    }
+
+    .artist_list--list {
+        width: 100%;
+    }
+
+    .artist_list--list--li {
+        width: 100%;
+    }
+}
 </style>

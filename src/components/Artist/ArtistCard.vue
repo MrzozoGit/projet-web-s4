@@ -46,11 +46,6 @@ export default {
     position: relative;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.63);
     border: #D1DBFF ridge 3px;
-    /* cool pink chunky border */
-    /* border-width: 10px;
-    border-image: url('https://cdn140.picsart.com/322698437144201.png') 1100 round; */
-    ;
-
     transition: all .15s ease-in-out;
 }
 
@@ -87,5 +82,19 @@ export default {
 
 .artist_card--infos--name {
     margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .artist_card {
+        width: 100%;
+    }
+
+    .artist_card a {
+        width: auto;
+    }
+
+    .artist_card--picture {
+        width: 100%;
+    }
 }
 </style>

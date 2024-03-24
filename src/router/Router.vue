@@ -69,10 +69,29 @@ main {
     max-height: 100%;
     overflow: scroll;
     overflow-x: hidden;
-    /* background-color: white; */
-
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+
+@media screen and (max-width: 1200px) {
+    main {
+        margin-left: 4rem;
+        margin-right: 4rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    main {
+        margin-left: 3rem;
+        margin-right: 3rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    main {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
 }
 </style>

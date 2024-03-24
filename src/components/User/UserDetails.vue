@@ -76,13 +76,11 @@ export default {
 
 <style>
 .user_details {
-    /* width: 100%; */
     display: flex;
     box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.63);
     border: #D1DBFF ridge 8px;
     margin-bottom: 2rem;
     margin-top: 2rem;
-    /* align-items: space-between; */
 
     margin-right: 3rem;
     margin-left: 3rem;
@@ -90,7 +88,7 @@ export default {
 
 .user_details--img {
     border-right: #D1DBFF ridge 8px;
-    height: 174px;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -137,5 +135,50 @@ export default {
 
 .user_details--counter_container {
     display: flex;
+}
+
+@media screen and (max-width: 992px) {
+    .user_details {
+        border: #D1DBFF ridge 6px;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+        margin-left: 1rem;
+    }
+
+    .user_details--img {
+        border-right: #D1DBFF ridge 6px;
+    }
+
+    .user_details--lastplayed {
+        border-left: #D1DBFF ridge 6px;
+        min-width: 151px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .user_details {
+        border: #D1DBFF ridge 4px;
+        margin-bottom: .5rem;
+        margin-top: .5rem;
+        margin-right: 0;
+        margin-left: 0;
+        overflow-x: scroll;
+        width: 100%;
+        min-height: 190px;
+    }
+
+    .user_details--img {
+        border-right: #D1DBFF ridge 4px;
+    }
+
+    .user_details--lastplayed {
+        border-left: #D1DBFF ridge 4px;
+        min-width: 182px;
+    }
+
+    .user_details--container {
+        min-width: 300px;
+    }
 }
 </style>

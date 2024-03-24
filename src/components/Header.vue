@@ -29,6 +29,27 @@
     object-fit: contain;
 }
 
+@media screen and (max-width: 1200px) {
+    .header {
+        margin-left: 4rem;
+        margin-right: 4rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .header {
+        margin-left: 3rem;
+        margin-right: 3rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+}
+
 /* .header {
     background-color: black;
 }
