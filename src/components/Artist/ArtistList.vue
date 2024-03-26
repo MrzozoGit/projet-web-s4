@@ -5,7 +5,8 @@ import ArtistCard from '@/components/Artist/ArtistCard.vue';
 
 <template>
     <div class="artist_list">
-        <h2 class="artist_list--title">Top {{ number }} artists</h2>
+        <h2 v-if="!isSaved" class="artist_list--title">Top {{ number }} artists</h2>
+        <h2 v-else class="artist_list--title">Saved artists</h2>
         <ul class="artist_list--list">
             <li class="artist_list--list--li" v-for="artist in artistsList" :key="artist">
                 <ArtistCard :data="artist" :isSaved="isSaved"></ArtistCard>
@@ -13,7 +14,7 @@ import ArtistCard from '@/components/Artist/ArtistCard.vue';
         </ul>
     </div>
 </template>
-  
+
 <script>
 export default {
     name: 'ArtistList',
@@ -28,17 +29,18 @@ export default {
         }
     },
 
-    mounted() {
-        console.log("mounted");
+    beforeMount() {
+        console.log("beforeMount");
         try {
             this.artists.then(res => this.artistsList = res);
+            this.$forceUpdate();
         } catch {
             this.artistsList = this.artists;
         }
     },
 }
 </script>
-  
+
 <style>
 .artist_list {
     display: flex;
@@ -70,6 +72,7 @@ export default {
     .artist_list {
         margin-left: 0rem;
         margin-right: 0rem;
+        width: 100%;
     }
 
     .artist_list--list {

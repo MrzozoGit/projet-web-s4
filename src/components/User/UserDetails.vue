@@ -8,7 +8,8 @@ import UserDetailsCounter from '@/components/User/UserDetailsCounter.vue'
         <div class="user_details--container">
             <div>
                 <p class="user_details--username">{{ getUsername }}</p>
-                <p class="user_details--country" v-if="userData.country && userData.country!='None'">{{ getCountry }}</p>
+                <p class="user_details--country" v-if="userData.country && userData.country != 'None'">{{ getCountry }}
+                </p>
             </div>
             <div class="user_details--counter_container">
                 <UserDetailsCounter :title="'Playcount'" :count="userData.stats.playcount"></UserDetailsCounter>
@@ -60,9 +61,9 @@ export default {
                 const codePoints = countryCode
                     .toUpperCase()
                     .split('')
-                    .map(char =>  127397 + char.charCodeAt());
+                    .map(char => 127397 + char.charCodeAt());
                 return String.fromCodePoint(...codePoints);
-                }
+            }
             return this.userData.country;
         }
     },
@@ -84,11 +85,12 @@ export default {
 
     margin-right: 3rem;
     margin-left: 3rem;
+    /* max-height: 190px; */
 }
 
 .user_details--img {
     border-right: #D1DBFF ridge 8px;
-    height: 100%;
+    height: 174px;
     object-fit: cover;
 }
 
