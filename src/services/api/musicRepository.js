@@ -1,18 +1,21 @@
-// website to avoid cors: https://cors-anywhere.herokuapp.com/corsdemo
-
+// Configuration data for Last.fm API
 var lastfmData = {
     baseURL: "https://ws.audioscrobbler.com/2.0/",
     api_key: "2be6786fceb431023c516743e950c3d1",
     additional: "&format=json"
   };
 
+  // Configuration data for Spotify API
 var spotifyData = {
     token: "BQBAJIaNvwF73CelPwVxwJcOqSAV5wJX_8y2ESp0g0dnjTfiSxEUCH7qWBwmja06W_q6H7dW9T25M9o9pZhjNagoNn9u621RvXYytbw74Xq28PaVKUE"
 }
 
+// CORS bypass URL
 const corsBypass = "https://cors-anywhere.herokuapp.com/";
 
+// Function to fetch Spotify access token
 export async function getSpotifyToken() {
+    // Fetches Spotify access token
     const resSpotify = await fetch(corsBypass + "https://open.spotify.com/get_access_token?reason=transport&productType=web_player", {
         method: "GET",
         headers: {
@@ -22,8 +25,10 @@ export async function getSpotifyToken() {
     spotifyData.token = resSpotify.accessToken;
 }
 
+// Function to get artist image using Spotify API
 export async function getArtistImage(artist) {
-    // Lastfm doesn't give access to artists images, so I use the Spotify API just for that.
+    // Retrieves artist image using Spotify API
+    // Lastfm doesn't give access to artists images, so I use the Spotify API just for that specificaly
     const urlSpotify = "https://api.spotify.com/v1/search?type=artist&q=" + artist + "&decorate_restrictions=false&best_match=true&include_external=audio&limit=1";
     const resSpotify = await fetch(urlSpotify, {
         method: "GET",
@@ -36,10 +41,10 @@ export async function getArtistImage(artist) {
     return resSpotify.best_match.items[0].images.length > 0 ? resSpotify.best_match.items[0].images[0].url : "https://freepngimg.com/thumb/cat/1-2-cat-png-2.png";
 }
 
+// Function to get artist information from Last.fm API
 export async function getArtistInfo(artist) {
     artist = encodeURIComponent(artist);
-
-    // Get artists datas from Lastfm API
+    // Retrieves artist information from Last.fm API
     const urlLastfm = lastfmData.baseURL + "?method=artist.getinfo&artist=" + artist + "&api_key=" + lastfmData.api_key + lastfmData.additional + "&limit=1";
     const resLastfm = await fetch(urlLastfm, {
         method: "GET",
@@ -62,7 +67,9 @@ export async function getArtistInfo(artist) {
     };
 }
 
+// Function to get top artists for a user from Last.fm API
 export async function getArtists(user, nbOfArtists) {
+    // Retrieves top artists for a user from Last.fm API
     const urlLastfm = lastfmData.baseURL + "?method=user.gettopartists&user=" + user + "&api_key=" + lastfmData.api_key + lastfmData.additional + "&limit=" + nbOfArtists;
     const resLastfm = await fetch(urlLastfm, {
         method: "GET",
@@ -89,7 +96,9 @@ export async function getArtists(user, nbOfArtists) {
     return topArtists;
 }
 
+// Function to get the last played track for a user from Last.fm API
 export async function getLastPlayedTrack(user) {
+    // Retrieves the last played track for a user from Last.fm API
     const urlLastfm = lastfmData.baseURL + "?method=user.getrecenttracks&user=" + user + "&api_key=" + lastfmData.api_key + lastfmData.additional + "&limit=1";
     const resLastfm = await fetch(urlLastfm, {
         method: "GET",
@@ -109,7 +118,9 @@ export async function getLastPlayedTrack(user) {
     return trackData;
 }
 
+// Function to get user information from Last.fm API
 export async function getUserInfos(user) {
+    // Retrieves user information from Last.fm API
     const urlLastfm = lastfmData.baseURL + "?method=user.getinfo&user=" + user + "&api_key=" + lastfmData.api_key + lastfmData.additional;
     const resLastfm = await fetch(urlLastfm, {
         method: "GET",

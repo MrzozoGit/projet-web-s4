@@ -1,5 +1,6 @@
 <template>
     <footer class="footer">
+        <!-- Copyright text -->
         <div class="footer--copyright">MyMusic by L0R3Z // 2024 </div>
     </footer>
 </template>

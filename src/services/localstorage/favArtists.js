@@ -1,50 +1,54 @@
+
+// Save artist into the localStorage
 export function saveArtist(artist) {
-    // Récupérer l'objet favoriteArtists du localStorage, ou initialiser un nouvel objet si non existant
+    // Retrieve favoriteArtists object from localStorage, or initialize a new object if none exists
     let favoriteArtists = JSON.parse(localStorage.getItem('favoriteArtists')) || {};
 
-    // Vérifier si l'artiste existe déjà pour éviter les doublons
+    // Check if the artist already exists to avoid duplicates
     if (!favoriteArtists[artist.name]) {
-        // Ajouter l'artiste à l'objet favoriteArtists
+        // Add artist to favoriteArtists object
         favoriteArtists[artist.name] = artist;
 
-        // Sauvegarder l'objet mis à jour dans le localStorage
+        // Save updated object in localStorage
         localStorage.setItem('favoriteArtists', JSON.stringify(favoriteArtists));
-        console.log(`L'artiste ${artist.name} a été ajouté à vos favoris.`);
+        console.log(`${artist.name} has been added to your favorites.`);
     } else {
-        // L'artiste existe déjà, ne pas l'enregistrer à nouveau
-        console.log(`L'artiste ${artist.name} existe déjà dans vos favoris.`);
+        // Artist already exists, do not register again
+        console.log(`${artist.name} already exists in your favorites.`);
     }
 }
 
+// Delete artist from the localStorage
 export function deleteArtist(artistName) {
-    // Récupérer l'objet favoriteArtists du localStorage
+    // Retrieve favoriteArtists object from localStorage
     let favoriteArtists = JSON.parse(localStorage.getItem('favoriteArtists'));
 
-    // Vérifier si l'objet favoriteArtists existe et si l'artiste spécifié est présent
+    // Check if the favoriteArtists object exists and if the specified artist is present
     if (favoriteArtists && favoriteArtists[artistName]) {
-        // Supprimer l'artiste de l'objet
+        // Remove artist from object
         delete favoriteArtists[artistName];
 
-        // Sauvegarder l'objet mis à jour dans le localStorage
+        // Save updated object in localStorage
         localStorage.setItem('favoriteArtists', JSON.stringify(favoriteArtists));
-        console.log(`L'artiste ${artistName} a été retiré de vos favoris.`);
+        console.log(`${artistName} has been removed from your favorites.`);
     } else {
-        // L'artiste n'existe pas dans les favoris
-        console.log(`L'artiste ${artistName} n'existe pas dans vos favoris.`);
+        // The artist does not exist in favorites
+        console.log(`${artistName} does not exist in your favorites.`);
     }
 }
 
+// Get artist from the localStorage
 export function getFavArtists() {
-    // Récupérer l'objet favoriteArtists du localStorage
+    // Retrieve favoriteArtists object from localStorage
     let favoriteArtists = JSON.parse(localStorage.getItem('favoriteArtists'));
 
-    // Vérifier si l'objet favoriteArtists existe
+    // Check if favoriteArtists object exists
     if (favoriteArtists) {
-        // Retourner l'objet des artistes favoris
+        // Return the object of favorite artists
         return favoriteArtists;
     } else {
-        // Retourner un objet vide ou null si aucun artiste n'est enregistré
-        console.log("Aucun artiste favori enregistré.");
+        // Return an empty object or null if no artist is registered
+        console.log("No favorite artist recorded.");
         return null;
     }
 }

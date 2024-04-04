@@ -1,6 +1,8 @@
 <template>
     <div class="user_details--counter">
+        <!-- Counter name -->
         <p class="user_details--counter--title">{{ title }}</p>
+        <!-- Counter value -->
         <p class="user_details--counter--count">{{ count }}</p>
     </div>
 </template>

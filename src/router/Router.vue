@@ -1,3 +1,5 @@
+<!-- App router. Serves to load the VUE associated with the current URL. Also, load the header and footer because it is more convenient for the CSS layout. -->
+
 <script setup>
 import { getSpotifyToken } from '@/services/api/musicRepository.js';
 // Pages
@@ -12,12 +14,14 @@ import Footer from "@/components/Footer.vue"
 
 <template>
 
-        <Header></Header>
-        <main class="mymusic cool_box">
-            <component :is="currentView" />
-        </main>
-        <Footer></Footer>
-        <CD></CD>
+    <Header></Header>
+    <main class="mymusic cool_box">
+        <component :is="currentView" />
+    </main>
+    <Footer></Footer>
+
+    <!-- Cool little loader in the bottom right of the page -->
+    <CD></CD>
 
 </template>
 
@@ -36,23 +40,26 @@ export default {
     },
 
     computed: {
+        // Get the view associated with the current path. If it doesn't exist, return the NotFound VUE.
         currentView() {
             return routes[this.currentPath] || NotFound;
         },
     },
 
+    // Before mounting the app, gets the Spotify anonymous user's token to get access to the artist's images.
     async beforeMount() {
         try {
             await getSpotifyToken();
         }
+        // If there is an error, it means that the CORS accessibility isn't enabled, so the app redirects to the CORS infos page to fix that.
         catch(err) {
             console.log("Error getting the spotify token");
             console.log(err);
             this.currentPath = "/request-cors";
-            
         }
     },
 
+    // When the app is mounted, add a listener to the path changes.
     mounted() {
         window.addEventListener("hashchange", () => {
             this.currentPath = window.location.pathname;

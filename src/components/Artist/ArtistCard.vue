@@ -5,12 +5,16 @@ import { deleteArtist, saveArtist } from '@/services/localstorage/favArtists.js'
 
 <template>
     <div class="artist_card" v-if="!isJustDeleted">
+        <!-- Link to Last.fm artist page -->
         <a v-bind:href="data.lastfmUrl" target="_blank">
+            <!-- Artist picture -->
             <img class="artist_card--picture" v-bind:src="data.img" />
+            <!-- Artist information -->
             <div class="artist_card--infos">
                 <h2 class="artist_card--infos--name">{{ data.name }}</h2>
             </div>
         </a>
+        <!-- Save/Delete button -->
         <p class="artist_card--button" v-if="!isSaved" v-on:click="save">SAVE</p>
         <p class="artist_card--button" v-else v-on:click="unsave">DELETE</p>
     </div>
@@ -29,10 +33,12 @@ export default {
         };
     },
     methods: {
+        // Method to save artist to the localStorage
         save() {
             saveArtist(this.data);
         },
 
+        // Method to delete artist from the localStorage
         unsave() {
             deleteArtist(this.data.name);
             this.isJustDeleted = true;

@@ -9,5 +9,4 @@ import Router from "./router/Router.vue";
 <style>
 @import "./assets/reset.css";
 @import "./assets/main.css";
-/* Add a reset CSS */
 </style>

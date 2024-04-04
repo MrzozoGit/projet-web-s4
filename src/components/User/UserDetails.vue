@@ -5,15 +5,19 @@ import UserDetailsCounter from '@/components/User/UserDetailsCounter.vue'
 
 <template>
     <div class="user_details">
+        <!-- User profile image -->
         <img class="user_details--img" :src="getImage" alt="user profile picture">
         <div class="user_details--container">
             <div>
+                <!-- User username -->
                 <a :href="userData.url" target="_blank">
                     <p class="user_details--username">{{ getUsername }}</p>
                 </a>
+                <!-- User country -->
                 <p class="user_details--country" v-if="userData.country && userData.country!='None'">{{ getCountry }}</p>
             </div>
             <div class="user_details--counter_container">
+                <!-- User details counters -->
                 <UserDetailsCounter :title="'Playcount'" :count="userData.stats.playcount"></UserDetailsCounter>
                 <UserDetailsCounter :title="'Track count'" :count="userData.stats.track_count"></UserDetailsCounter>
                 <UserDetailsCounter :title="'Album Count'" :count="userData.stats.album_count"></UserDetailsCounter>
@@ -21,7 +25,9 @@ import UserDetailsCounter from '@/components/User/UserDetailsCounter.vue'
             </div>
         </div>
         <div class="user_details--lastplayed">
+            <!-- Last played track image -->
             <img class="user_details--lastplayed--img" :src="lastPlayed.img" alt="last played track cover">
+            <!-- Last played track information -->
             <div class="user_details--lastplayed--infos">
                 <p>Last played track</p>
                 <p><a :href="lastPlayed.url" target="_blank">{{ lastPlayed.name }}</a> by {{ lastPlayed.artist }}</p>
@@ -40,16 +46,19 @@ export default {
     },
 
     computed: {
+        // Method to get user image
         getImage() {
             if (this.userData.image) return this.userData.image;
             else return "/src/assets/default-avatar.jpg";
         },
 
+        // Method to get username
         getUsername() {
             if (this.userData.realname) return this.userData.realname;
             else return this.user;
         },
 
+        // Method to get country flag (WIP, does not work for now)
         getCountry() {
             let countryCode;
             if (this.userData.country == "France") countryCode = "FR";
@@ -63,12 +72,7 @@ export default {
             }
             return this.userData.country;
         }
-    },
-
-    mounted() {
-        // console.log("mounted");
-        // console.log(this.userData);
-    },
+    }
 }
 </script>
 

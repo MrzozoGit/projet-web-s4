@@ -30,7 +30,6 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #99b6ff;
-  /* background: #CDDBFF; */
 }
 
 /* Classes that I need everywhere */
@@ -39,9 +38,6 @@ body {
   padding: 10px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.63);
   border: #D1DBFF ridge 3px;
-
-  /* cool pink chunky border */
-  /* border-width: 50px; border-image: url('https://cdn140.picsart.com/322698437144201.png') 150 round;; */
 }
 
 /* Animations */
@@ -69,5 +65,17 @@ body {
   }
   50% {
     transform: rotate(5deg);
+  }
+}
+
+@keyframes rotateAndScale {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
   }
 }

@@ -1,3 +1,4 @@
+<!-- 404 Not Found. Features a cool gif randomly selected from a list of cool gifs. -->
 <template>
     <div class="notfound">
         <p>404: page not found!</p>

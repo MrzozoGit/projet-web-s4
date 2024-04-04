@@ -1,8 +1,7 @@
 <template>
     <header class="header">
         <div class="header--box cool_box">
-            <!-- <h1 class="header__box__h1">◄ L0R3Z ►</h1> -->
-            <img class="header--box--img" src="../assets/logo2.gif" alt="">
+            <img class="header--box--img" src="../assets/logo.gif" alt="">
         </div>
     </header>
 </template>
