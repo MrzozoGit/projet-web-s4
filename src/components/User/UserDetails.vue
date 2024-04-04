@@ -2,12 +2,15 @@
 import { getLastPlayedTrack } from '@/services/api/musicRepository.js';
 import UserDetailsCounter from '@/components/User/UserDetailsCounter.vue'
 </script>
+
 <template>
     <div class="user_details">
         <img class="user_details--img" :src="getImage" alt="user profile picture">
         <div class="user_details--container">
             <div>
-                <p class="user_details--username">{{ getUsername }}</p>
+                <a :href="userData.url" target="_blank">
+                    <p class="user_details--username">{{ getUsername }}</p>
+                </a>
                 <p class="user_details--country" v-if="userData.country && userData.country!='None'">{{ getCountry }}</p>
             </div>
             <div class="user_details--counter_container">
@@ -35,11 +38,6 @@ export default {
         userData: { type: Object, required: true },
         lastPlayed: { type: Object, required: true }
     },
-    // data() {
-    //     return {
-    //         // lastPlayed: {}
-    //     }
-    // },
 
     computed: {
         getImage() {

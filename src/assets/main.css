@@ -53,3 +53,21 @@ body {
     background-position: 240px 240px;
   }
 }
+
+@keyframes swingText {
+  0%, 100% {
+    transform: skewX(-10deg);
+  }
+  50% {
+    transform: skewX(10deg);
+  }
+}
+
+@keyframes rotateText {
+  0%, 100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}

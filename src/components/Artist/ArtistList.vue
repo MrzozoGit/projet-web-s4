@@ -5,7 +5,7 @@ import ArtistCard from '@/components/Artist/ArtistCard.vue';
 
 <template>
     <div class="artist_list">
-        <h2 class="artist_list--title">Top {{ number }} artists</h2>
+        <h2 class="artist_list--title">{{ title }}</h2>
         <ul class="artist_list--list">
             <li class="artist_list--list--li" v-for="artist in artistsList" :key="artist">
                 <ArtistCard :data="artist" :isSaved="isSaved"></ArtistCard>
@@ -25,6 +25,13 @@ export default {
     data() {
         return {
             artistsList: []
+        }
+    },
+
+    computed: {
+        title() {
+            if (this.isSaved) return "My saved artists";
+            else return "User's top " + this.number + " artists";
         }
     },
 
@@ -54,6 +61,7 @@ export default {
     font-family: Barlow, Open Sans, Lucida Grande, Helvetica Neue, Helvetica, Arial, Sans-serif;
     text-transform: uppercase;
     text-align: center;
+    animation: swingText 2s ease-in-out infinite;
 }
 
 .artist_list--list {

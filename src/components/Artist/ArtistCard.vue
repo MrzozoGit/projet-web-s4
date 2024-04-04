@@ -11,8 +11,8 @@ import { deleteArtist, saveArtist } from '@/services/localstorage/favArtists.js'
                 <h2 class="artist_card--infos--name">{{ data.name }}</h2>
             </div>
         </a>
-        <p v-if="!isSaved" v-on:click="save" style="z-index: 100; position: absolute; right: .5rem; top: 0; color: white; font-weight: bold;">SAVE</p>
-        <p v-else v-on:click="unsave" style="z-index: 100; position: absolute; right: .5rem; top: 0; color: white; font-weight: bold;">DELETE</p>
+        <p class="artist_card--button" v-if="!isSaved" v-on:click="save">SAVE</p>
+        <p class="artist_card--button" v-else v-on:click="unsave">DELETE</p>
     </div>
 </template>
   
@@ -82,6 +82,23 @@ export default {
 
 .artist_card--infos--name {
     margin: 0;
+}
+
+.artist_card--button {
+    z-index: 100;
+    position: absolute;
+    right: .5rem;
+    top: 0;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 0 10px rgba(0, 0, 0, .7);
+    transition: all .5s ease-in-out;
+}
+
+.artist_card--button:hover {
+    font-size: 2em;
+    animation: rotateText 2s ease-in-out infinite; 
 }
 
 @media screen and (max-width: 768px) {

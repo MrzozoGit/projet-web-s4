@@ -118,10 +118,13 @@ export async function getUserInfos(user) {
         }
     }).then(res => res = res.json());
 
+    console.log(resLastfm)
+
     const userDatas = {
         realname: resLastfm.user.realname,
         country: resLastfm.user.country,
         image: resLastfm.user.image[2]["#text"],
+        url: resLastfm.user.url,
         stats: {
             album_count: resLastfm.user.album_count,
             artist_count: resLastfm.user.artist_count,
