@@ -9,14 +9,17 @@ import UserAnalyticsNavigation from "@/components/UserAnalyticsNavigation.vue";
 
 <template>
     <UserAnalyticsNavigation :username="userData.username" :hasFirstLoaded="hasFirstLoaded" :artists="userData.artists"
-    @update:username="handleUsernameUpdate" @select:dataType="selectedDataType = $event"></UserAnalyticsNavigation>
+        @update:username="handleUsernameUpdate" @select:dataType="selectedDataType = $event"></UserAnalyticsNavigation>
 
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 
-    <ArtistList v-if="selectedDataType=='saved'" :number="10" :artists="getFav()" :isSaved="true"></ArtistList>
-    <UserDetails v-if="selectedDataType!='saved' && hasFirstLoaded && !loadingStatus && userData.lastPlayedTrack" :user="userData.username" :userData="userData.infos" :lastPlayed="userData.lastPlayedTrack"></UserDetails>
-    <ArtistList v-if="selectedDataType=='top10' && !loadingStatus && userData.artists" :number="10" :artists="getTopOrdered(10)" :isSaved="false"></ArtistList>
-    <ArtistList v-if="selectedDataType=='top100' && !loadingStatus && userData.artists" :number="100" :artists="getTopOrdered(100)" :isSaved="false"></ArtistList>
+    <ArtistList v-if="selectedDataType == 'saved'" :number="10" :artists="getFav()" :isSaved="true"></ArtistList>
+    <UserDetails v-if="selectedDataType != 'saved' && hasFirstLoaded && !loadingStatus && userData.lastPlayedTrack"
+        :user="userData.username" :userData="userData.infos" :lastPlayed="userData.lastPlayedTrack"></UserDetails>
+    <ArtistList v-if="selectedDataType == 'top10' && !loadingStatus && userData.artists" :number="10"
+        :artists="getTopOrdered(10)" :isSaved="false"></ArtistList>
+    <ArtistList v-if="selectedDataType == 'top100' && !loadingStatus && userData.artists" :number="100"
+        :artists="getTopOrdered(100)" :isSaved="false"></ArtistList>
 </template>
 
 <script>
@@ -38,10 +41,10 @@ export default {
     mounted() {
         this.toggleLoadingAnimation();
     },
-    
+
     methods: {
         async handleUsernameUpdate(newUsername) {
-            if(newUsername == '' || newUsername.trim().length === 0) {
+            if (newUsername == '' || newUsername.trim().length === 0) {
                 this.errorMessage = "Please enter a valid username!";
                 return;
             }
@@ -54,11 +57,12 @@ export default {
                 await this.retrieveUserInfos();
                 await this.retrieveArtistsList();
                 this.errorMessage = '';
-            } catch(err) {
+            } catch (err) {
                 this.userData.lastPlayedTrack = undefined;
                 this.userData.artists = undefined;
                 this.errorMessage = err;
             }
+            await new Promise(resolve => setTimeout(resolve, 1000));
             this.toggleLoadingAnimation();
             this.hasFirstLoaded = true;
             remember(this.userData.username);
@@ -75,13 +79,13 @@ export default {
             try {
                 this.userData.infos = await getUserInfos(this.userData.username);
                 this.userData.lastPlayedTrack = await getLastPlayedTrack(this.userData.username);
-            } catch(err) {
+            } catch (err) {
                 throw err;
             }
         },
         async toggleLoadingAnimation() {
             this.loadingStatus = !this.loadingStatus;
-            if(this.loadingStatus) document.querySelector(".CD--img").style.display = "block";
+            if (this.loadingStatus) document.querySelector(".CD--img").style.display = "block";
             else document.querySelector(".CD--img").style.display = "none";
         },
         async getTopOrdered(nb) {

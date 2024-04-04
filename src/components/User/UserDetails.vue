@@ -58,9 +58,9 @@ export default {
                 const codePoints = countryCode
                     .toUpperCase()
                     .split('')
-                    .map(char =>  127397 + char.charCodeAt());
+                    .map(char => 127397 + char.charCodeAt());
                 return String.fromCodePoint(...codePoints);
-                }
+            }
             return this.userData.country;
         }
     },
@@ -82,11 +82,12 @@ export default {
 
     margin-right: 3rem;
     margin-left: 3rem;
+    /* max-height: 190px; */
 }
 
 .user_details--img {
     border-right: #D1DBFF ridge 8px;
-    height: 100%;
+    height: 174px;
     object-fit: cover;
 }
 

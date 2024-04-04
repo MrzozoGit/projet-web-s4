@@ -13,7 +13,7 @@ import ArtistCard from '@/components/Artist/ArtistCard.vue';
         </ul>
     </div>
 </template>
-  
+
 <script>
 export default {
     name: 'ArtistList',
@@ -36,16 +36,16 @@ export default {
     },
 
     mounted() {
-        console.log("mounted");
         try {
             this.artists.then(res => this.artistsList = res);
+            this.$forceUpdate();
         } catch {
             this.artistsList = this.artists;
         }
     },
 }
 </script>
-  
+
 <style>
 .artist_list {
     display: flex;
@@ -78,6 +78,7 @@ export default {
     .artist_list {
         margin-left: 0rem;
         margin-right: 0rem;
+        width: 100%;
     }
 
     .artist_list--list {

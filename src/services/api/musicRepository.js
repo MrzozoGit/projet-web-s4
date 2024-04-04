@@ -118,8 +118,6 @@ export async function getUserInfos(user) {
         }
     }).then(res => res = res.json());
 
-    console.log(resLastfm)
-
     const userDatas = {
         realname: resLastfm.user.realname,
         country: resLastfm.user.country,
